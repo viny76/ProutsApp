@@ -7,7 +7,6 @@
 //
 
 #import "AddEventsViewController.h"
-#import <SevenSwitch.h>
 #import "ShowFriendViewController.h"
 
 @interface AddEventsViewController () <UIAlertViewDelegate>
@@ -51,7 +50,10 @@ replacementString:(NSString *)string {
 - (BOOL)verifications {
     BOOL ok = YES;
     
-    // Check Sound
+//     Check Sound
+    if (self.datasound == nil) {
+        ok = NO;
+    }
 //    if (self.datasound.text.length == 0) {
 //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:Localized(@"ERROR") message:Localized(@"Question is empty") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
 //        alert.tag = 100;
@@ -103,19 +105,16 @@ replacementString:(NSString *)string {
 
 #pragma mark - AUDIO RECORDER
 - (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag {
-    NSLog(@"stoped");
-    if (!self.stopped) {
         NSData *data = [NSData dataWithContentsOfURL:recorder.url];
         [self sendAudioToServer:data];
-        [recorder record];
-        NSLog(@"stoped sent and restarted");
-    }
 }
-- (IBAction)startRec:(id)sender {
-    if (!self.audioRecorder.recording) {
-        self.sendSoundButton.enabled = YES;
-        self.stopSoundButton.enabled = YES;
+- (IBAction)startRec:(KYShutterButton *)sender {
+    if (sender.buttonState == ButtonStateNormal) {
+        sender.buttonState = ButtonStateRecording;
         [self.audioRecorder record];
+    } else if (sender.buttonState == ButtonStateRecording) {
+        sender.buttonState = ButtonStateNormal;
+        [self.audioRecorder stop];
     }
 }
 
@@ -124,28 +123,8 @@ replacementString:(NSString *)string {
     return YES;
 }
 
-- (IBAction)sendToServer:(id)sender {
-    self.stopped = NO;
-    [self.audioRecorder stop];
-}
-
-- (IBAction)stop:(id)sender {
-    self.stopSoundButton.enabled = NO;
-    self.sendSoundButton.enabled = NO;
-    self.recordSoundButton.enabled = YES;
-    
-    self.stopped = YES;
-    if (self.audioRecorder.recording) {
-        [self.audioRecorder stop];
-    }
-}
-
 - (void)initMicrophone {
     //RECORD AUDIO
-    self.sendSoundButton.enabled = NO;
-    self.stopSoundButton.enabled = NO;
-    self.stopped = YES;
-    
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     NSString *soundFilePath = [docsDir
@@ -171,6 +150,5 @@ replacementString:(NSString *)string {
         [self.audioRecorder prepareToRecord];
     }
 }
-
 
 @end

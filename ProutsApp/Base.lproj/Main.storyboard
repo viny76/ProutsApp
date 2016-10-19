@@ -137,7 +137,7 @@
                             <rect key="frame" x="69" y="-9" width="238" height="62"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="WolfintheCity" family="Wolf in the City" pointSize="50"/>
-                            <state key="normal" title="ProutsApp">
+                            <state key="normal" title="Test">
                                 <color key="titleColor" red="0.66274509800000003" green="0.78823529410000004" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
@@ -185,32 +185,29 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aYe-ry-fhF" userLabel="Content View">
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9IA-jS-zq7">
-                                                <frame key="frameInset" minX="61" minY="399" width="61" height="30"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" title="RECORD"/>
+                                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9IA-jS-zq7" customClass="KYShutterButton" customModule="ProutsApp" customModuleProvider="target">
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="66" id="BbJ-uQ-7lQ"/>
+                                                    <constraint firstAttribute="height" constant="66" id="MrP-Or-nE3"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="typeRaw">
+                                                        <integer key="value" value="0"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="buttonColor">
+                                                        <color key="value" red="0.93333333333333335" green="0.10196078431372549" blue="0.15686274509803921" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="startRec:" destination="ihN-JH-Aco" eventType="touchUpInside" id="oug-4O-vRf"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sya-04-CQ2">
-                                                <frame key="frameInset" minX="168" minY="399" width="40" height="30"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" title="SEND"/>
-                                                <connections>
-                                                    <action selector="sendToServer:" destination="ihN-JH-Aco" eventType="touchUpInside" id="YvM-A0-S9z"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hkt-Ru-J1V">
-                                                <frame key="frameInset" minX="279" minY="399" width="39" height="30"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" title="STOP"/>
-                                                <connections>
-                                                    <action selector="stop:" destination="ihN-JH-Aco" eventType="touchUpInside" id="e2d-nB-aFY"/>
+                                                    <action selector="startRec:" destination="ihN-JH-Aco" eventType="touchUpInside" id="Cmc-ka-cA1"/>
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="9IA-jS-zq7" firstAttribute="centerX" secondItem="aYe-ry-fhF" secondAttribute="centerX" id="jzr-sb-L4A"/>
+                                            <constraint firstItem="9IA-jS-zq7" firstAttribute="centerY" secondItem="aYe-ry-fhF" secondAttribute="centerY" id="y11-RD-5pR"/>
+                                        </constraints>
                                     </view>
                                 </subviews>
                                 <constraints>
@@ -223,7 +220,6 @@
                                 </constraints>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="PGy-RA-7ux" firstAttribute="leading" secondItem="TQC-ss-Sgq" secondAttribute="leading" id="8Uj-CL-BvD"/>
                             <constraint firstItem="PGy-RA-7ux" firstAttribute="top" secondItem="TQC-ss-Sgq" secondAttribute="top" id="FF7-qg-Ysp"/>
@@ -250,10 +246,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="recordSoundButton" destination="9IA-jS-zq7" id="dqn-nj-ycB"/>
+                        <outlet property="recordSoundButton" destination="9IA-jS-zq7" id="0CE-nv-N9V"/>
                         <outlet property="sendEventButton" destination="GNV-JE-FH9" id="coh-mh-6TI"/>
-                        <outlet property="sendSoundButton" destination="sya-04-CQ2" id="7fa-oF-IxF"/>
-                        <outlet property="stopSoundButton" destination="hkt-Ru-J1V" id="uB9-sd-zg6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1jx-nf-R05" userLabel="First Responder" sceneMemberID="firstResponder"/>

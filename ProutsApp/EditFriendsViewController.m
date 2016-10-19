@@ -6,7 +6,7 @@
 
 #import "EditFriendsViewController.h"
 #import "HomeViewController.h"
-#import <MEAlertView.h>
+#import "MEAlertView.h"
 
 @interface EditFriendsViewController ()
 @end
@@ -82,7 +82,7 @@
     return 23;
 }
 
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     /* Section header is in 0th index... */
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 18)];
     /* Create custom view to display section header... */

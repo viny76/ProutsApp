@@ -107,11 +107,7 @@ NSData *soundData;
     [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     cell.hourLabel.text = [formatter stringFromDate:post.createdAt];
     
-    PFFile *soundFile = [post objectForKey:@"soundFile"];
-    if (soundFile != nil) {
-        soundFileUrl = [[NSURL alloc] initWithString:soundFile.url];
-        soundData = [[NSData alloc] initWithContentsOfURL:soundFileUrl options:NSDataReadingMappedIfSafe error:nil ];
-    } else {
+    if ([post objectForKey:@"soundFile"] == nil) {
         cell.playSoundButton.hidden = YES;
     }
     
@@ -119,7 +115,6 @@ NSData *soundData;
     for (NSInteger i = 0; i < indexPath.section; i++) {
         rowNumber += [self.tableView numberOfRowsInSection:i];
     }
-    NSLog(@"%ld", (long)rowNumber);
     
     rowNumber += indexPath.row;
     switch (rowNumber % 2) {
@@ -335,18 +330,23 @@ NSData *soundData;
 }
 
 - (IBAction)playSound:(id)sender {
+    CGPoint buttonPosition = [sender convertPoint:CGPointZero
+                                           toView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonPosition];
     NSError *error;
+    
+    PFObject *post = self.sampleData[indexPath.section][@"group"][indexPath.row];
+    PFFile *soundFile = [post objectForKey:@"soundFile"];
+    soundFileUrl = [[NSURL alloc] initWithString:soundFile.url];
+    soundData = [[NSData alloc] initWithContentsOfURL:soundFileUrl options:NSDataReadingMappedIfSafe error:nil ];
+    
     self.player = [[AVAudioPlayer alloc] initWithData:soundData error:nil];
-    NSLog(@"%@", soundFileUrl);
-    //   self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:soundFileUrl error:&error];
     
     if (self.player) {
         [self.player setDelegate:self];
         [self.player prepareToPlay];
         [self.player play];
-    }
-    else
-    {
+    } else {
         NSLog(@"ERRORE: %@", error);
     }
 }
