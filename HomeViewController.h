@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
+#import <AVFoundation/AVFoundation.h>
 
-@interface HomeViewController : UIViewController <UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, UIAlertViewDelegate> {
+@interface HomeViewController : UIViewController <UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, UIAlertViewDelegate, AVAudioPlayerDelegate> {
     UIRefreshControl *refreshControl;
 }
 
@@ -28,6 +29,7 @@
 @property (nonatomic, strong) NSString *timerString;
 
 @property (strong, nonatomic) NSMutableArray *sampleData;
+@property(strong, nonatomic) AVAudioPlayer *player;
 
 - (void)reloadFriend;
 

@@ -35,6 +35,7 @@
 		2C20FBF81DB6C359003078F9 /* EventDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C20FBF41DB6C359003078F9 /* EventDetailViewController.m */; };
 		2C20FC001DB6C580003078F9 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C20FBD91DB6C2F5003078F9 /* HomeViewController.m */; };
 		2C20FC011DB6C586003078F9 /* HomeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C20FBDC1DB6C31A003078F9 /* HomeCell.m */; };
+		2C20FC041DB6DAA0003078F9 /* Wolf-in-the-City.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C20FC031DB6DAA0003078F9 /* Wolf-in-the-City.ttf */; };
 		773099F3A5438847BAAD2001 /* libPods-ProutsAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98A0899F1AD437FC99FC14BD /* libPods-ProutsAppTests.a */; };
 		FCB8657F9C5B2AF44CE19D62 /* libPods-ProutsAppUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 244BCF8C911045F43000075E /* libPods-ProutsAppUITests.a */; };
 /* End PBXBuildFile section */
@@ -114,6 +115,7 @@
 		2C20FBF31DB6C359003078F9 /* EventDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailViewController.h; sourceTree = "<group>"; };
 		2C20FBF41DB6C359003078F9 /* EventDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailViewController.m; sourceTree = "<group>"; };
 		2C20FC021DB6C60D003078F9 /* ProutsApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ProutsApp.entitlements; sourceTree = "<group>"; };
+		2C20FC031DB6DAA0003078F9 /* Wolf-in-the-City.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Wolf-in-the-City.ttf"; sourceTree = "<group>"; };
 		8275C36ABA82FC3C54873BF6 /* Pods-ProutsAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProutsAppTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProutsAppTests/Pods-ProutsAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		82B4C1AAB9CECFFA97C1F8BC /* Pods-ProutsAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProutsAppUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProutsAppUITests/Pods-ProutsAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		91FB8AC79265E70AA5F8927D /* Pods-ProutsAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProutsAppUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProutsAppUITests/Pods-ProutsAppUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -191,6 +193,12 @@
 			isa = PBXGroup;
 			children = (
 				2C20FC021DB6C60D003078F9 /* ProutsApp.entitlements */,
+				2C20FB8B1DB6C190003078F9 /* AppDelegate.h */,
+				2C20FB8C1DB6C190003078F9 /* AppDelegate.m */,
+				2C20FB911DB6C190003078F9 /* Main.storyboard */,
+				2C20FB961DB6C190003078F9 /* LaunchScreen.storyboard */,
+				2C20FBD21DB6C2AB003078F9 /* LaunchScreen.h */,
+				2C20FBD31DB6C2AB003078F9 /* LaunchScreen.m */,
 				2C20FBFE1DB6C47C003078F9 /* Common */,
 				2C20FBFB1DB6C42F003078F9 /* Login */,
 				2C20FBFA1DB6C423003078F9 /* Sign Up */,
@@ -198,12 +206,6 @@
 				2C20FBFC1DB6C445003078F9 /* Edit Friends */,
 				2C20FBFD1DB6C45E003078F9 /* Settings */,
 				2C20FBFF1DB6C4A4003078F9 /* Events */,
-				2C20FB8B1DB6C190003078F9 /* AppDelegate.h */,
-				2C20FB8C1DB6C190003078F9 /* AppDelegate.m */,
-				2C20FB911DB6C190003078F9 /* Main.storyboard */,
-				2C20FB961DB6C190003078F9 /* LaunchScreen.storyboard */,
-				2C20FBD21DB6C2AB003078F9 /* LaunchScreen.h */,
-				2C20FBD31DB6C2AB003078F9 /* LaunchScreen.m */,
 				2C20FB941DB6C190003078F9 /* Assets.xcassets */,
 				2C20FB991DB6C190003078F9 /* Info.plist */,
 				2C20FB881DB6C190003078F9 /* Supporting Files */,
@@ -214,6 +216,7 @@
 		2C20FB881DB6C190003078F9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2C20FC031DB6DAA0003078F9 /* Wolf-in-the-City.ttf */,
 				2C20FB891DB6C190003078F9 /* main.m */,
 			);
 			name = "Supporting Files";
@@ -460,6 +463,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C20FC041DB6DAA0003078F9 /* Wolf-in-the-City.ttf in Resources */,
 				2C20FB981DB6C190003078F9 /* LaunchScreen.storyboard in Resources */,
 				2C20FB951DB6C190003078F9 /* Assets.xcassets in Resources */,
 				2C20FB931DB6C190003078F9 /* Main.storyboard in Resources */,
@@ -704,6 +708,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -752,6 +757,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

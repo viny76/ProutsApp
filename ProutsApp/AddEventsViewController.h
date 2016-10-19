@@ -9,23 +9,21 @@
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
 #import <QuartzCore/QuartzCore.h>
+#import <AVFoundation/AVFoundation.h>
 #import "MBProgressHUD.h"
-#import "HSDatePickerViewController.h"
 
-@class SevenSwitch;
-
-@interface AddEventsViewController : UIViewController <UITextFieldDelegate>
+@interface AddEventsViewController : UIViewController <AVAudioRecorderDelegate>
 
 @property (strong, nonatomic) PFUser *currentUser;
 @property (strong, nonatomic) NSArray *friendsList;
-@property (strong, nonatomic) IBOutlet UITextField *questionTextField;
-@property (strong, nonatomic) IBOutlet UIButton *dateButton;
-@property (strong, nonatomic) IBOutlet SevenSwitch *mySwitch;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *sendEventButton;
-@property (strong, nonatomic) NSString *questionString;
-@property (strong, nonatomic) NSDate *selectedDate;
-@property (strong, nonatomic) IBOutlet UIView *otherDetailsView;
 @property (strong, nonatomic) IBOutlet UIButton *sendButton;
-@property (nonatomic, strong) CLLocation *address;
+@property (nonatomic, retain) AVAudioRecorder *audioRecorder;
+@property (nonatomic, weak) IBOutlet UIButton *recordSoundButton;
+@property (nonatomic, weak) IBOutlet UIButton *sendSoundButton;
+@property (nonatomic, weak) IBOutlet UIButton *stopSoundButton;
+@property (nonatomic, strong) AVAudioSession *audioSession;
+@property (nonatomic, strong) NSData *datasound;
+@property BOOL stopped;
 
 @end

@@ -19,7 +19,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [Parse initializeWithConfiguration:[ParseClientConfiguration configurationWithBlock:^(id<ParseMutableClientConfiguration> configuration) {
         configuration.applicationId = @"BT4S02paJi9C5ihi1YbMX6xElBIwFiOIBthLGkOW";
         configuration.clientKey = @"Fz6aInVwOGQCHKFiOnSbT05hs2Y6jVg7tjsRbl3d";
-        configuration.server = @"http://chilln.herokuapp.com/parse";
+        configuration.server = @"http://proutsapp.herokuapp.com/parse";
     }]];
     [PFUser enableRevocableSessionInBackground];
     

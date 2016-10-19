@@ -10,7 +10,7 @@
 #import <SevenSwitch.h>
 #import "ShowFriendViewController.h"
 
-@interface AddEventsViewController () <UIAlertViewDelegate, UITextFieldDelegate, HSDatePickerViewControllerDelegate>
+@interface AddEventsViewController () <UIAlertViewDelegate>
 @end
 
 @implementation AddEventsViewController
@@ -18,7 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.sendButton sizeToFit];
-    self.mySwitch.on = YES;
+    [self initMicrophone];
 }
 - (void)dismissKeyboard {
     [self.view endEditing:YES];
@@ -48,71 +48,40 @@ replacementString:(NSString *)string {
     return YES;
 }
 
-- (void)showDatePicker:(id)sender {
-    HSDatePickerViewController *hsdpvc = [HSDatePickerViewController new];
-    hsdpvc.delegate = self;
-    [self presentViewController:hsdpvc animated:YES completion:nil];
-}
-
-// DATE PICKER
-#pragma mark - HSDatePickerViewControllerDelegate
-- (void)hsDatePickerPickedDate:(NSDate *)date {
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
-    
-    // Add the following line to display the time in the local time zone
-    [dateFormatter setTimeZone:[NSTimeZone systemTimeZone]];
-    [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm"];
-    NSString* finalTime = [dateFormatter stringFromDate:date];
-    [self.dateButton setTitle:[dateFormatter stringFromDate:date] forState:UIControlStateNormal];
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
-    self.selectedDate = [dateFormatter dateFromString:finalTime];
-}
-
-//optional
-- (void)hsDatePickerDidDismissWithQuitMethod:(HSDatePickerQuitMethod)method {
-    //    NSLog(@"Picker did dismiss with %lu", (unsigned long)method);
-}
-
-//optional
-- (void)hsDatePickerWillDismissWithQuitMethod:(HSDatePickerQuitMethod)method {
-    //  NSLog(@"Picker will dismiss with %lu", (unsigned long)method);
-}
-
 - (BOOL)verifications {
     BOOL ok = YES;
     
-    // Check Question
-    if (self.questionTextField.text.length == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:Localized(@"ERROR") message:Localized(@"Question is empty") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        alert.tag = 100;
-        [alert show];
-        ok = NO;
-    }
+    // Check Sound
+//    if (self.datasound.text.length == 0) {
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:Localized(@"ERROR") message:Localized(@"Question is empty") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//        alert.tag = 100;
+//        [alert show];
+//        ok = NO;
+//    }
     
-    // Check Date
-    else if ([self.dateButton.titleLabel.text isEqualToString:@"Choisir Date"]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:Localized(@"ERROR") message:Localized(@"Select Date") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        alert.tag = 101;
-        [alert show];
-        ok = NO;
-    }
+//    // Check Date
+//    else if ([self.dateButton.titleLabel.text isEqualToString:@"Choisir Date"]) {
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:Localized(@"ERROR") message:Localized(@"Select Date") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//        alert.tag = 101;
+//        [alert show];
+//        ok = NO;
+//    }
     
     return ok;
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (alertView.tag == 100) {
-        if (buttonIndex == 0) {
-            [self.questionTextField becomeFirstResponder];
-        }
-    }
-    else if (alertView.tag == 101) {
-        if (buttonIndex == 0) {
-            [self showDatePicker:self.dateButton];
-        }
-    }
-}
+//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+//    if (alertView.tag == 100) {
+//        if (buttonIndex == 0) {
+//            [self.questionTextField becomeFirstResponder];
+//        }
+//    }
+//    else if (alertView.tag == 101) {
+//        if (buttonIndex == 0) {
+//            [self showDatePicker:self.dateButton];
+//        }
+//    }
+//}
 
 - (IBAction)sendEvent:(id)sender {
     if ([self verifications]) {
@@ -123,18 +92,83 @@ replacementString:(NSString *)string {
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"showFriend"]) {
         PFObject *events = [PFObject objectWithClassName:@"Events"];
-        [events setObject:self.questionTextField.text forKey:@"question"];
-        [events setObject:[NSNumber numberWithBool:[self.mySwitch isOn]] forKey:@"visibility"];
-        [events setObject:self.selectedDate forKey:@"date"];
-        if (self.address != nil) {
-            [events setObject:[NSNumber numberWithDouble:self.address.coordinate.latitude] forKey:@"lat"];
-            [events setObject:[NSNumber numberWithDouble:self.address.coordinate.longitude] forKey:@"long"];
-        }
+        [events setObject:[PFFile fileWithName:@"sound.caf" data:self.datasound] forKey:@"soundFile"];
         
         ShowFriendViewController *showFriendController = [segue destinationViewController];
         showFriendController.currentUser = self.currentUser;
         showFriendController.friendsList = self.friendsList;
         showFriendController.eventObject = events;
+    }
+}
+
+#pragma mark - AUDIO RECORDER
+- (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag {
+    NSLog(@"stoped");
+    if (!self.stopped) {
+        NSData *data = [NSData dataWithContentsOfURL:recorder.url];
+        [self sendAudioToServer:data];
+        [recorder record];
+        NSLog(@"stoped sent and restarted");
+    }
+}
+- (IBAction)startRec:(id)sender {
+    if (!self.audioRecorder.recording) {
+        self.sendSoundButton.enabled = YES;
+        self.stopSoundButton.enabled = YES;
+        [self.audioRecorder record];
+    }
+}
+
+- (BOOL)sendAudioToServer:(NSData *)data {
+    self.datasound = [NSData dataWithData:data];
+    return YES;
+}
+
+- (IBAction)sendToServer:(id)sender {
+    self.stopped = NO;
+    [self.audioRecorder stop];
+}
+
+- (IBAction)stop:(id)sender {
+    self.stopSoundButton.enabled = NO;
+    self.sendSoundButton.enabled = NO;
+    self.recordSoundButton.enabled = YES;
+    
+    self.stopped = YES;
+    if (self.audioRecorder.recording) {
+        [self.audioRecorder stop];
+    }
+}
+
+- (void)initMicrophone {
+    //RECORD AUDIO
+    self.sendSoundButton.enabled = NO;
+    self.stopSoundButton.enabled = NO;
+    self.stopped = YES;
+    
+    NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docsDir = [dirPaths objectAtIndex:0];
+    NSString *soundFilePath = [docsDir
+                               stringByAppendingPathComponent:@"tempsound.caf"];
+    
+    NSURL *soundFileURL = [NSURL fileURLWithPath:soundFilePath];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryRecord error:nil];
+    [[AVAudioSession sharedInstance] setMode:AVAudioSessionModeVideoRecording error:nil];
+    NSDictionary *recordSettings =
+    [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:AVAudioQualityMin],
+     AVEncoderAudioQualityKey, [NSNumber numberWithInt: 1], AVNumberOfChannelsKey, [NSNumber numberWithFloat:22050.0], AVSampleRateKey, nil];
+    
+    NSError *error = nil;
+    
+    self.audioRecorder = [[AVAudioRecorder alloc]
+                          initWithURL:soundFileURL
+                          settings:recordSettings
+                          error:nil];
+    self.audioRecorder.delegate = self;
+    if (error) {
+        NSLog(@"error: %@", [error localizedDescription]);
+    } else {
+        [self.audioRecorder prepareToRecord];
     }
 }
 

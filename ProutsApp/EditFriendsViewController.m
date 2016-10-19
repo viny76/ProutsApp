@@ -93,7 +93,7 @@
     [view setBackgroundColor:[UIColor colorChillin]];
     
     if (self.segment.selectedSegmentIndex == 0) {
-        string = Localized(@"FriendList");
+        string = @"Liste d'amis";
     }
     else if (self.segment.selectedSegmentIndex == 1) {
         BOOL showSection = [[self.sectionedPersonName objectAtIndex:section] count] != 0;
@@ -219,7 +219,7 @@
         NSString *bananaEmoji = @" \U0001F34C";
         
         cell.textLabel.text = [[NSString stringWithFormat:@"%ld. ", (long)indexPath.row+1
-                                 ] stringByAppendingString:name];
+                                ] stringByAppendingString:name];
         cell.detailTextLabel.text = [experience stringByAppendingString:bananaEmoji];
     }
     
@@ -306,7 +306,7 @@
     
     //AMIS EN ATTENTE
     else if (self.segment.selectedSegmentIndex == 2) {
-//        [self addFriend:indexPath forCell:cell];
+        //        [self addFriend:indexPath forCell:cell];
     }
     
     [self.tableView reloadData];

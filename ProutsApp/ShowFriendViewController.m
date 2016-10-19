@@ -154,7 +154,7 @@
     if (self.recipientId.count != 0) {
         [self.eventObject setObject:self.currentUser.objectId forKey:@"fromUserId"];
         [self.eventObject setObject:self.currentUser[@"surname"] forKey:@"fromUser"];
-        [self.eventObject addObject:[self.currentUser objectForKey:@"surname"] forKey:@"acceptedUser"];
+//        [self.eventObject addObject:[self.currentUser objectForKey:@"surname"] forKey:@"acceptedUser"];
         if (self.segment.selectedSegmentIndex == 0) {
             [self.eventObject setObject:self.recipientId forKey:@"toUserId"];
             [self.eventObject setObject:self.recipientUser forKey:@"toUser"];

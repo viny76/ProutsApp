@@ -95,7 +95,7 @@ BOOL notificationOn = NO;
     
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            buttonCell.cellLabel.text = Localized(@"Disconnect");
+            buttonCell.cellLabel.text = @"Se déconnecter";
             
 //            if (notificationOn || version < 8.0){
 //                SwitchTableViewCell *switchCell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell" forIndexPath:indexPath];
@@ -140,7 +140,7 @@ BOOL notificationOn = NO;
 //        }
     } else if (indexPath.section == 1) {
         if (indexPath.row == 0) {
-            buttonCell.cellLabel.text = Localized(@"Terms and Conditions");
+            buttonCell.cellLabel.text = @"Termes et Conditions";
         }
         
         

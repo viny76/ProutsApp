@@ -21,6 +21,8 @@
 @end
 
 @implementation HomeViewController
+NSURL *soundFileUrl;
+NSData *soundData;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -33,6 +35,8 @@
     
     // Launch Timer
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timerTick:) userInfo:nil repeats:YES];
+    
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     
     //reloadEvents
     refreshControl = [[UIRefreshControl alloc]init];
@@ -63,7 +67,7 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section; {
-    return self.sampleData[section][@"date"];
+    return self.sampleData[section][@"createdAt"];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section; {
@@ -94,29 +98,21 @@
     HomeCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     PFObject *post = self.sampleData[indexPath.section][@"group"][indexPath.row];
-    
-    cell.titleLabel.text = [NSString stringWithFormat:@"%@", [post objectForKey:@"question"]];
     cell.subtitleLabel.text = [NSString stringWithFormat:@"%@", [post objectForKey:@"fromUser"]];
-    cell.participantLabel.text = [NSString stringWithFormat:@"%lu", [[post objectForKey:@"acceptedUser"] count]];
-    cell.refusantLabel.text = [NSString stringWithFormat:@"%lu", [[post objectForKey:@"refusedUser"] count]];
+
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     // Add the following line to display the time in the local time zone
     [formatter setTimeZone:[NSTimeZone systemTimeZone]];
     [formatter setDateFormat:@"HH:mm"];
     [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
-    cell.hourLabel.text = [formatter stringFromDate:[post objectForKey:@"date"]];
+    cell.hourLabel.text = [formatter stringFromDate:post.createdAt];
     
-    if (![[post objectForKey:@"acceptedUser"] isEqual:[NSNull null]] &&
-        [[post objectForKey:@"acceptedUser"] containsObject:[self.currentUser objectForKey:@"surname"]]) {
-        cell.yesButton.selected = YES;
-        cell.noButton.selected = NO;
-    } else if (![[post objectForKey:@"refusedUser"] isEqual:[NSNull null]] &&
-               [[post objectForKey:@"refusedUser"] containsObject:[self.currentUser objectForKey:@"surname"]]) {
-        cell.yesButton.selected = NO;
-        cell.noButton.selected = YES;
+    PFFile *soundFile = [post objectForKey:@"soundFile"];
+    if (soundFile != nil) {
+        soundFileUrl = [[NSURL alloc] initWithString:soundFile.url];
+        soundData = [[NSData alloc] initWithContentsOfURL:soundFileUrl options:NSDataReadingMappedIfSafe error:nil ];
     } else {
-        cell.yesButton.selected = NO;
-        cell.noButton.selected = NO;
+        cell.playSoundButton.hidden = YES;
     }
     
     NSInteger rowNumber = 0;
@@ -191,64 +187,6 @@
     }
 }
 
-- (IBAction)yesButton:(id)sender {
-    CGPoint buttonPosition = [sender convertPoint:CGPointZero
-                                           toView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonPosition];
-    PFQuery *query = [PFQuery queryWithClassName:@"Events"];
-    [query whereKey:@"objectId" equalTo:[[[self.sampleData objectAtIndex:indexPath.section][@"group"] objectAtIndex:indexPath.row] valueForKey:@"objectId"]];
-    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-        if (!error) {
-            if ([[object valueForKey:@"acceptedUser"] containsObject:[self.currentUser objectForKey:@"surname"]]) {
-            } else if ([[object valueForKey:@"refusedUser"] containsObject:[self.currentUser objectForKey:@"surname"]]) {
-                
-                [object addObject:[self.currentUser objectForKey:@"surname"] forKey:@"acceptedUser"];
-                [object removeObject:[self.currentUser objectForKey:@"surname"] forKey:@"refusedUser"];
-            } else {
-                [object addObject:[self.currentUser objectForKey:@"surname"] forKey:@"acceptedUser"];
-            }
-            
-            [object saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-                if (succeeded) {
-                    // A REVOIR : recharger que l'event en question.
-                    [self reloadEvents];
-                }
-            }];
-        } else {
-            NSLog(@"Error: %@", error);
-        }
-    }];
-}
-
-- (IBAction)noButton:(id)sender {
-    CGPoint buttonPosition = [sender convertPoint:CGPointZero
-                                           toView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonPosition];
-    PFQuery *query = [PFQuery queryWithClassName:@"Events"];
-    [query whereKey:@"objectId" equalTo:[[[self.sampleData objectAtIndex:indexPath.section][@"group"] objectAtIndex:indexPath.row] valueForKey:@"objectId"]];
-    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-        if (!error) {
-            if ([[object valueForKey:@"refusedUser"] containsObject:[self.currentUser objectForKey:@"surname"]]) {
-            } else if ([[object valueForKey:@"acceptedUser"] containsObject:[self.currentUser objectForKey:@"surname"]]) {
-                [object removeObject:[self.currentUser objectForKey:@"surname"] forKey:@"acceptedUser"];
-                [object addObject:[self.currentUser objectForKey:@"surname"] forKey:@"refusedUser"];
-            }
-            else {
-                [object addObject:[self.currentUser objectForKey:@"surname"] forKey:@"refusedUser"];
-            }
-            
-            [object saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-                if (succeeded) {
-                    // A REVOIR : recharger que l'event en question.
-                    [self reloadEvents];
-                }
-            }];
-        } else {
-            NSLog(@"Error: %@", error);
-        }
-    }];
-}
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"addEvents"]) {
         AddEventsViewController *viewController = (AddEventsViewController *)segue.destinationViewController;
@@ -271,7 +209,7 @@
     [eventsQuery2 whereKey:@"fromUserId" equalTo:[[PFUser currentUser] objectId]];
     
     PFQuery *eventsQuery = [PFQuery orQueryWithSubqueries:@[eventsQuery1,eventsQuery2]];
-    [eventsQuery orderByAscending:@"date"];
+    [eventsQuery orderByDescending:@"createdAt"];
     
     if (eventsQuery) {
         [eventsQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
@@ -291,14 +229,12 @@
                 NSMutableDictionary *daysWithPosts = [NSMutableDictionary dictionary];
                 
                 [objects enumerateObjectsUsingBlock:^(PFObject *object, NSUInteger idx, BOOL *stop) {
-                    NSString *dateString = [formatter stringFromDate:[object objectForKey:@"date"]];
-                    
+                    NSString *dateString = [formatter stringFromDate:object.createdAt];
                     // Check to see if we have a day already.
                     NSMutableArray *posts = [daysWithPosts objectForKey: dateString];
                     
                     // If not, create it
-                    if (posts == nil || (id)posts == [NSNull null])
-                    {
+                    if (posts == nil || (id)posts == [NSNull null]) {
                         posts = [NSMutableArray arrayWithCapacity:1];
                         [daysWithPosts setObject:posts forKey: dateString];
                     }
@@ -312,7 +248,7 @@
                 NSArray *sortedSectionTitles = [unsortedSectionTitles sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
                     NSDate *date1 = [formatter dateFromString:obj1];
                     NSDate *date2 = [formatter dateFromString:obj2];
-                    return [date1 compare:date2];
+                    return [date2 compare:date1];
                 }];
                 
                 NSMutableArray *sortedData = [NSMutableArray arrayWithCapacity:sortedSectionTitles.count];
@@ -320,12 +256,13 @@
                 // Put Data into correct format:
                 [sortedSectionTitles enumerateObjectsUsingBlock:^(NSString *dateString, NSUInteger idx, BOOL *stop) {
                     NSArray *group = daysWithPosts[dateString];
-                    NSDictionary *dictionary = @{ @"date":dateString,
+                    NSDictionary *dictionary = @{ @"createdAt":dateString,
                                                   @"group":group };
                     [sortedData addObject:dictionary];
                 }];
                 
                 self.sampleData = sortedData;
+                NSLog(@"%lu", (unsigned long)[self.sampleData count]);
                 [refreshControl endRefreshing];
                 [self.tableView reloadData];
                 
@@ -395,6 +332,23 @@
             self.friends = objects;
         }
     }];
+}
+
+- (IBAction)playSound:(id)sender {
+    NSError *error;
+    self.player = [[AVAudioPlayer alloc] initWithData:soundData error:nil];
+    NSLog(@"%@", soundFileUrl);
+    //   self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:soundFileUrl error:&error];
+    
+    if (self.player) {
+        [self.player setDelegate:self];
+        [self.player prepareToPlay];
+        [self.player play];
+    }
+    else
+    {
+        NSLog(@"ERRORE: %@", error);
+    }
 }
 
 @end
