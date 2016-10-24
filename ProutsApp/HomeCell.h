@@ -18,5 +18,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *refusantLabel;
 @property (weak, nonatomic) IBOutlet UILabel *hourLabel;
 @property (weak, nonatomic) IBOutlet UIButton *playSoundButton;
+@property (weak, nonatomic) IBOutlet UISlider *progressSlider;
+@property (weak, nonatomic) IBOutlet UIButton *plusButton;
 
 @end

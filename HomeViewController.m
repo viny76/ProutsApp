@@ -21,6 +21,9 @@
 @end
 
 @implementation HomeViewController
+NSTimer *sliderTimer;
+
+#define Rgb2UIColor(r, g, b)  [UIColor colorWithRed:((r) / 255.0) green:((g) / 255.0) blue:((b) / 255.0) alpha:1.0]
 NSURL *soundFileUrl;
 NSData *soundData;
 
@@ -86,30 +89,27 @@ NSData *soundData;
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
     // Background color
-    view.tintColor = [UIColor whiteColor];
+    view.tintColor = [UIColor colorWithHexString:@"4054B2"];
     
     // Text Color
     UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
-    [header.textLabel setTextColor:[UIColor colorWithHexString:@"5394FC"]];
+    [header.textLabel setTextColor:[UIColor whiteColor]];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"parallaxCell";
     HomeCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     PFObject *post = self.sampleData[indexPath.section][@"group"][indexPath.row];
     cell.subtitleLabel.text = [NSString stringWithFormat:@"%@", [post objectForKey:@"fromUser"]];
-
+    
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     // Add the following line to display the time in the local time zone
     [formatter setTimeZone:[NSTimeZone systemTimeZone]];
     [formatter setDateFormat:@"HH:mm"];
-    [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC+2"]];
     cell.hourLabel.text = [formatter stringFromDate:post.createdAt];
-    
-    if ([post objectForKey:@"soundFile"] == nil) {
-        cell.playSoundButton.hidden = YES;
-    }
     
     NSInteger rowNumber = 0;
     for (NSInteger i = 0; i < indexPath.section; i++) {
@@ -117,23 +117,29 @@ NSData *soundData;
     }
     
     rowNumber += indexPath.row;
-    switch (rowNumber % 2) {
-        case 0:
-            cell.contentView.backgroundColor = [UIColor colorWithHexString:@"5394FC"];
-            break;
-        case 1:
-            cell.contentView.backgroundColor = [UIColor colorWithHexString:@"0E66F1"];
-            break;
-            //        case 2:
-            //            cell.contentView.backgroundColor = [UIColor colorWithHexString:@"0E66F1"];
-            //            break;
-            //        case 3:
-            //            cell.contentView.backgroundColor = [UIColor colorWithHexString:@"1871FD"];
-            //            break;
-            
-        default:
-            break;
-    }
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = CGRectMake(0, 0, self.tableView.frame.size.width, [tableView rectForRowAtIndexPath:indexPath].size.height);
+//    gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithHexString:@"2980b9"] CGColor], (id)[[UIColor colorWithHexString:@"2c3e50"] CGColor], nil];
+    gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithHexString:@"F0F0F0"] CGColor], (id)[[UIColor colorWithHexString:@"AEAEAE"] CGColor], nil];
+    [cell.contentView.layer insertSublayer:gradient atIndex:0];
+    
+    //    switch (rowNumber % 2) {
+    //        case 0:
+    //            cell.contentView.backgroundColor = Rgb2UIColor(125, 216, 171);
+    //            break;
+    //        case 1:
+    //            cell.contentView.backgroundColor = [UIColor colorWithHexString:@"0E66F1"];
+    //            break;
+    //            //        case 2:
+    //            //            cell.contentView.backgroundColor = [UIColor colorWithHexString:@"0E66F1"];
+    //            //            break;
+    //            //        case 3:
+    //            //            cell.contentView.backgroundColor = [UIColor colorWithHexString:@"1871FD"];
+    //            //            break;
+    //
+    //        default:
+    //            break;
+    //    }
     
     return cell;
 }
@@ -157,9 +163,7 @@ NSData *soundData;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return YES if you want the specified item to be editable.
     PFObject *post = self.sampleData[indexPath.section][@"group"][indexPath.row];
-    //    PFUser *user = [[self.events valueForKey:@"fromUserId"] objectAtIndex:indexPath.row];
     PFUser *user = [post objectForKey:@"fromUserId"];
     if ([user  isEqual: [[PFUser currentUser] objectId]]) {
         return YES;
@@ -170,7 +174,6 @@ NSData *soundData;
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        //add code here for when you hit delete
         PFObject *object = self.sampleData[indexPath.section][@"group"][indexPath.row];
         [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
@@ -329,25 +332,46 @@ NSData *soundData;
     }];
 }
 
-- (IBAction)playSound:(id)sender {
+- (IBAction)playSound:(UIButton *)sender {
+    [sender setImage:[UIImage imageNamed:@"replay"] forState:UIControlStateNormal];
     CGPoint buttonPosition = [sender convertPoint:CGPointZero
                                            toView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonPosition];
-    NSError *error;
     
     PFObject *post = self.sampleData[indexPath.section][@"group"][indexPath.row];
     PFFile *soundFile = [post objectForKey:@"soundFile"];
     soundFileUrl = [[NSURL alloc] initWithString:soundFile.url];
     soundData = [[NSData alloc] initWithContentsOfURL:soundFileUrl options:NSDataReadingMappedIfSafe error:nil ];
-    
     self.player = [[AVAudioPlayer alloc] initWithData:soundData error:nil];
     
-    if (self.player) {
-        [self.player setDelegate:self];
-        [self.player prepareToPlay];
-        [self.player play];
+    if (sliderTimer) {
+        [sliderTimer invalidate];
+    }
+    
+    [self.player setDelegate:self];
+    [self.player prepareToPlay];
+    [self.player play];
+    
+    NSMutableDictionary *cb = [[NSMutableDictionary alloc] init];
+    [cb setObject:indexPath forKey:@"indexPath"];
+    [cb setObject:sender forKey:@"sender"];
+    sliderTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updatePlayProgress:) userInfo:cb repeats:YES];
+}
+
+- (void)updatePlayProgress:(NSTimer *)timer {
+    NSDictionary *dict = [timer userInfo];
+    NSIndexPath *indexPath = dict[@"indexPath"];
+    UIButton *sender = dict[@"sender"];
+    float timeLeft = self.player.currentTime/self.player.duration;
+    HomeCell *cell = (HomeCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+    [cell.progressSlider setValue:timeLeft];
+    
+    if ([self.player isPlaying]) {
+        NSLog(@"play");
     } else {
-        NSLog(@"ERRORE: %@", error);
+        NSLog(@"fin");
+        [sliderTimer invalidate];
+        [sender setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
     }
 }
 

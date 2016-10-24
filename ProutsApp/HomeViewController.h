@@ -26,6 +26,7 @@
 @property(nonatomic,strong) PFRelation *friendsRelation;
 @property(nonatomic,strong) PFObject *selectedEvent;
 @property(nonatomic, strong) NSArray *friends;
+@property (weak, nonatomic) IBOutlet UIProgressView *progressTimeBar;
 
 // Timer
 @property (nonatomic, strong) NSTimer *timer;
