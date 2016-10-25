@@ -27,10 +27,12 @@
     [layer setCornerRadius:2]; //when radius is 0, the border is a rectangle
     [layer setBackgroundColor:[[UIColor colorWithHexString:@"4054B2"] CGColor]];
     [self.progressSlider setThumbImage:[UIImage imageNamed:@"circle"] forState:UIControlStateNormal];
+    self.starRatingView.allowsHalfStars = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 }
+
 
 @end

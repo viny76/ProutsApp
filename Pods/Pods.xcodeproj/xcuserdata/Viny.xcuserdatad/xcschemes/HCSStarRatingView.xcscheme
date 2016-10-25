@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'D49B9645A45D9DA3674B0B26625DB140'
-               BlueprintName = 'TPKeyboardAvoiding'
+               BlueprintIdentifier = 'A8488902FAD1650405BAE38299A468E3'
+               BlueprintName = 'HCSStarRatingView'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libTPKeyboardAvoiding.a'>
+               BuildableName = 'libHCSStarRatingView.a'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

@@ -30,6 +30,8 @@
 
 @property (strong, nonatomic) NSMutableArray *sampleData;
 @property(strong, nonatomic) AVAudioPlayer *player;
+@property (nonatomic, strong) NSArray *myRate;
+
 
 - (void)reloadFriend;
 

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <HCSStarRatingView.h>
 
 @interface HomeCell : UITableViewCell
 @property (strong, nonatomic) IBOutlet UIView *cellView;
@@ -20,5 +21,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *playSoundButton;
 @property (weak, nonatomic) IBOutlet UISlider *progressSlider;
 @property (weak, nonatomic) IBOutlet UIButton *plusButton;
+@property (weak, nonatomic) IBOutlet HCSStarRatingView *starRatingView;
 
 @end

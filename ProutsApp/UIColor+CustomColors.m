@@ -11,7 +11,7 @@
 
 // Wall weight graph background + Calendar future medication to take point color
 + (UIColor *)colorChillin {
-    return [UIColor colorWithRed:79.0/255.0 green:145.0/255.0f blue:254.0/255.0f alpha:1.0f];
+    return [UIColor colorWithRed:20.0/255.0 green:40.0/255.0f blue:130.0/255.0f alpha:1.0f];
 }
 
 + (UIColor *)colorBlueButton {

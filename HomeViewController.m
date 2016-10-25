@@ -16,6 +16,7 @@
 #import <AddressBook/AddressBook.h>
 #import "CBZSplashView.h"
 #import "UIColor+CustomColors.h"
+#import "ProutsApp-Swift.h"
 
 @interface HomeViewController()
 @end
@@ -30,6 +31,7 @@ NSData *soundData;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.sampleData = [[NSMutableArray alloc] init];
+    self.myRate = [[NSArray alloc] init];
     [self configureAppearance];
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
     
@@ -46,6 +48,8 @@ NSData *soundData;
     [refreshControl beginRefreshing];
     [self.tableView addSubview:refreshControl];
     [refreshControl addTarget:self action:@selector(reloadEvents) forControlEvents:UIControlEventValueChanged];
+    
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -111,6 +115,24 @@ NSData *soundData;
     [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC+2"]];
     cell.hourLabel.text = [formatter stringFromDate:post.createdAt];
     
+    // Get Rate
+    if (![[post objectForKey:@"fromUserId"] isEqualToString:[PFUser currentUser].objectId]) {
+        PFRelation *relation = [post relationForKey:@"Rate"];
+        PFQuery *query = [relation query];
+        [query whereKey:@"eventId" equalTo:post.objectId];
+        [query whereKey:@"userId" equalTo:[PFUser currentUser].objectId];
+        [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+            if (object) {
+                cell.starRatingView.value = [[object valueForKey:@"rate"] floatValue];
+                cell.starRatingView.tintColor = [UIColor colorWithHexString:@"4054B2"];
+            }
+        }];
+    } else {
+        cell.starRatingView.value = 2;
+        // Average value
+        cell.starRatingView.enabled = NO;
+    }
+    
     NSInteger rowNumber = 0;
     for (NSInteger i = 0; i < indexPath.section; i++) {
         rowNumber += [self.tableView numberOfRowsInSection:i];
@@ -119,7 +141,7 @@ NSData *soundData;
     rowNumber += indexPath.row;
     CAGradientLayer *gradient = [CAGradientLayer layer];
     gradient.frame = CGRectMake(0, 0, self.tableView.frame.size.width, [tableView rectForRowAtIndexPath:indexPath].size.height);
-//    gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithHexString:@"2980b9"] CGColor], (id)[[UIColor colorWithHexString:@"2c3e50"] CGColor], nil];
+    //    gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithHexString:@"2980b9"] CGColor], (id)[[UIColor colorWithHexString:@"2c3e50"] CGColor], nil];
     gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithHexString:@"F0F0F0"] CGColor], (id)[[UIColor colorWithHexString:@"AEAEAE"] CGColor], nil];
     [cell.contentView.layer insertSublayer:gradient atIndex:0];
     
@@ -255,12 +277,11 @@ NSData *soundData;
                 [sortedSectionTitles enumerateObjectsUsingBlock:^(NSString *dateString, NSUInteger idx, BOOL *stop) {
                     NSArray *group = daysWithPosts[dateString];
                     NSDictionary *dictionary = @{ @"createdAt":dateString,
-                                                  @"group":group };
+                                                  @"group":group};
                     [sortedData addObject:dictionary];
                 }];
                 
                 self.sampleData = sortedData;
-                NSLog(@"%lu", (unsigned long)[self.sampleData count]);
                 [refreshControl endRefreshing];
                 [self.tableView reloadData];
                 
@@ -273,9 +294,9 @@ NSData *soundData;
 
 - (void)configureAppearance {
     // Navigation bar
-    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]]; // this will change the back button tint
-    [self.navigationController.navigationBar setBarTintColor:[UIColor colorChillin]];
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+//    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]]; // this will change the back button tint
+//    [self.navigationController.navigationBar setBarTintColor:[UIColor colorChillin]];
+//    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     
     //    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background"]];
     self.tableView.backgroundColor = [UIColor colorChillin];
@@ -301,8 +322,6 @@ NSData *soundData;
 }
 
 - (void)timerTick:(NSTimer *)timer {
-    // Timers are not guaranteed to tick at the nominal rate specified, so this isn't technically accurate.
-    // However, this is just an example to demonstrate how to stop some ongoing activity, so we can live with that inaccuracy.
     self.ticks += 1.0;
     double seconds = fmod(self.ticks, 60.0);
     double minutes = fmod(trunc(self.ticks / 60.0), 60.0);
@@ -338,8 +357,8 @@ NSData *soundData;
                                            toView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonPosition];
     
-    PFObject *post = self.sampleData[indexPath.section][@"group"][indexPath.row];
-    PFFile *soundFile = [post objectForKey:@"soundFile"];
+    PFObject *event = self.sampleData[indexPath.section][@"group"][indexPath.row];
+    PFFile *soundFile = [event objectForKey:@"soundFile"];
     soundFileUrl = [[NSURL alloc] initWithString:soundFile.url];
     soundData = [[NSData alloc] initWithContentsOfURL:soundFileUrl options:NSDataReadingMappedIfSafe error:nil ];
     self.player = [[AVAudioPlayer alloc] initWithData:soundData error:nil];
@@ -373,6 +392,38 @@ NSData *soundData;
         [sliderTimer invalidate];
         [sender setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
     }
+}
+
+- (IBAction)starDidChanged:(id)sender {
+    CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonPosition];
+    HomeCell *cell = (HomeCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+    PFObject *event = self.sampleData[indexPath.section][@"group"][indexPath.row];
+
+    PFRelation *relation = [event relationForKey:@"Rate"];
+    PFQuery *query = [relation query];
+    [query whereKey:@"eventId" equalTo:event.objectId];
+    [query whereKey:@"userId" equalTo:[PFUser currentUser].objectId];
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+        if (object) {
+            [object setObject:[NSNumber numberWithFloat:cell.starRatingView.value] forKey:@"rate"];
+            [object saveInBackground];
+        } else {
+            PFObject *rate = [PFObject objectWithClassName:@"Rate"];
+            [rate setObject:[PFUser currentUser].objectId forKey:@"userId"];
+            [rate setObject:[event objectForKey:@"fromUserId"] forKey:@"toUserId"];
+            [rate setObject:[PFUser currentUser][@"surname"] forKey:@"surname"];
+            [rate setObject:event.objectId forKey:@"eventId"];
+            [rate setObject:[NSNumber numberWithFloat:cell.starRatingView.value] forKey:@"rate"];
+            [rate saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                if (succeeded) {
+                    PFRelation *relation = [event relationForKey:@"Rate"];
+                    [relation addObject:rate];
+                    [event saveInBackground];
+                }
+            }];
+        }
+    }];
 }
 
 @end

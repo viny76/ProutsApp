@@ -19,6 +19,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>HCSStarRatingView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>HSDatePickerViewController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -87,11 +92,6 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2FCBF86CC915B298B7C5524BD1761854</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>4C36B1F5D992ACDFD781AFC537E2D4B2</key>
 		<dict>
 			<key>primary</key>
@@ -102,12 +102,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>65C4528E522B86D50C5A54A6C16BA446</key>
+		<key>6B0B9C928B05BA6346AB032DD0260C56</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6B0B9C928B05BA6346AB032DD0260C56</key>
+		<key>8950A39C6135DA27F55E1F4BC885CE8B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>95ED50CD4B9AF4F7DCB709CE738E3208</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -122,7 +127,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C404B84AB5F9EC57807998063D45A628</key>
+		<key>A8488902FAD1650405BAE38299A468E3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D49B9645A45D9DA3674B0B26625DB140</key>
 		<dict>
 			<key>primary</key>
 			<true/>

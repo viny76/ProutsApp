@@ -15,6 +15,7 @@ pod 'CBZSplashView', '~> 1.0.0'
 pod 'HSDatePickerViewController', '~> 1.0'
 pod 'SevenSwitch', '~> 1.4'
 pod 'MEAlertView', '~> 1.0.0'
+pod 'HCSStarRatingView', '~> 1.4.5'
 
   target 'ProutsAppTests' do
     inherit! :search_paths

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		03D1D96693D742651190AA2B /* libPods-ProutsAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D063E2D0C19276C031161B /* libPods-ProutsAppTests.a */; };
 		2C20FB8A1DB6C190003078F9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C20FB891DB6C190003078F9 /* main.m */; };
 		2C20FB8D1DB6C190003078F9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C20FB8C1DB6C190003078F9 /* AppDelegate.m */; };
 		2C20FB931DB6C190003078F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C20FB911DB6C190003078F9 /* Main.storyboard */; };
@@ -38,8 +37,9 @@
 		2C20FC041DB6DAA0003078F9 /* Wolf-in-the-City.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C20FC031DB6DAA0003078F9 /* Wolf-in-the-City.ttf */; };
 		2C36BF031DB7D5010015724D /* KYShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C36BF021DB7D5010015724D /* KYShutterButton.swift */; };
 		2CF0864B1DB79908009F16B8 /* TimerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0864A1DB79908009F16B8 /* TimerButton.m */; };
-		65B5A8FCF0691058CA02B5EB /* libPods-ProutsApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ECDB5B19C63F91FA79549E2 /* libPods-ProutsApp.a */; };
-		EFAA9A72AF6E6E30EE0D65BF /* libPods-ProutsAppUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C8A0DAD8C2CA282F39CCAF2A /* libPods-ProutsAppUITests.a */; };
+		3BF30AB69F10A38A6235B128 /* libPods-ProutsApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 26AFA727626BE4E1339EECED /* libPods-ProutsApp.a */; };
+		56D17D4784E394B468278777 /* libPods-ProutsAppUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B66D91FBFED492E70291204C /* libPods-ProutsAppUITests.a */; };
+		B438170C2ACC4FFE4EE7B3CF /* libPods-ProutsAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD7201735D3BDC09BF723E47 /* libPods-ProutsAppTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,8 +60,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		11D063E2D0C19276C031161B /* libPods-ProutsAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProutsAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1ECDB5B19C63F91FA79549E2 /* libPods-ProutsApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProutsApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		26AFA727626BE4E1339EECED /* libPods-ProutsApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProutsApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C20FB851DB6C190003078F9 /* ProutsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProutsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C20FB891DB6C190003078F9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2C20FB8B1DB6C190003078F9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -126,9 +125,10 @@
 		8275C36ABA82FC3C54873BF6 /* Pods-ProutsAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProutsAppTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProutsAppTests/Pods-ProutsAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		82B4C1AAB9CECFFA97C1F8BC /* Pods-ProutsAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProutsAppUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProutsAppUITests/Pods-ProutsAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		91FB8AC79265E70AA5F8927D /* Pods-ProutsAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProutsAppUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProutsAppUITests/Pods-ProutsAppUITests.release.xcconfig"; sourceTree = "<group>"; };
+		B66D91FBFED492E70291204C /* libPods-ProutsAppUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProutsAppUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD7201735D3BDC09BF723E47 /* libPods-ProutsAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProutsAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE097165DBB69F808CFED8A4 /* Pods-ProutsAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProutsAppTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProutsAppTests/Pods-ProutsAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C30473B20D6ACBC1B5E2CBF8 /* Pods-ProutsApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProutsApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProutsApp/Pods-ProutsApp.debug.xcconfig"; sourceTree = "<group>"; };
-		C8A0DAD8C2CA282F39CCAF2A /* libPods-ProutsAppUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProutsAppUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9D114B4A4FE2DB4FF119A53 /* Pods-ProutsApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProutsApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProutsApp/Pods-ProutsApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -137,7 +137,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65B5A8FCF0691058CA02B5EB /* libPods-ProutsApp.a in Frameworks */,
+				3BF30AB69F10A38A6235B128 /* libPods-ProutsApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,7 +145,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03D1D96693D742651190AA2B /* libPods-ProutsAppTests.a in Frameworks */,
+				B438170C2ACC4FFE4EE7B3CF /* libPods-ProutsAppTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,7 +153,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EFAA9A72AF6E6E30EE0D65BF /* libPods-ProutsAppUITests.a in Frameworks */,
+				56D17D4784E394B468278777 /* libPods-ProutsAppUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,9 +341,9 @@
 		42E8F3379A5395E5CB893F51 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1ECDB5B19C63F91FA79549E2 /* libPods-ProutsApp.a */,
-				11D063E2D0C19276C031161B /* libPods-ProutsAppTests.a */,
-				C8A0DAD8C2CA282F39CCAF2A /* libPods-ProutsAppUITests.a */,
+				26AFA727626BE4E1339EECED /* libPods-ProutsApp.a */,
+				BD7201735D3BDC09BF723E47 /* libPods-ProutsAppTests.a */,
+				B66D91FBFED492E70291204C /* libPods-ProutsAppUITests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

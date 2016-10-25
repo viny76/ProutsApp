@@ -46,6 +46,9 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [application registerForRemoteNotifications];
     application.applicationIconBadgeNumber = 0;
     
+    [[UINavigationBar appearance] setBarTintColor:[UIColor colorChillin]];
+    [[UINavigationBar appearance] setTranslucent:NO];
+    
     return YES;
 }
 

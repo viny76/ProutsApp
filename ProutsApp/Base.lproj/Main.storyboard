@@ -86,18 +86,44 @@
                                                         <constraint firstAttribute="height" constant="1" id="aa4-WU-UpX"/>
                                                     </constraints>
                                                 </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w8F-5P-Ik9" customClass="HCSStarRatingView">
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="50" id="A0e-yg-a8R"/>
+                                                        <constraint firstAttribute="width" constant="100" id="WXF-Rx-Lo5"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="maximumValue">
+                                                            <integer key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="minimumValue">
+                                                            <real key="value" value="0.0"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="value">
+                                                            <real key="value" value="0.0"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="spacing">
+                                                            <real key="value" value="1"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="starDidChanged:" destination="co9-QV-dG6" eventType="valueChanged" id="lYU-68-kHt"/>
+                                                    </connections>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstItem="Gc9-Ui-2ue" firstAttribute="leading" secondItem="fge-GR-bjU" secondAttribute="leading" id="0jR-tS-97U"/>
                                                 <constraint firstItem="Gc9-Ui-2ue" firstAttribute="top" secondItem="fge-GR-bjU" secondAttribute="bottom" constant="5" id="5b5-41-XYb"/>
                                                 <constraint firstItem="UBR-5y-F3k" firstAttribute="centerX" secondItem="uxj-xP-Jq0" secondAttribute="centerX" id="GoQ-bP-wJZ"/>
-                                                <constraint firstItem="UBR-5y-F3k" firstAttribute="centerY" secondItem="uxj-xP-Jq0" secondAttribute="centerY" id="QVf-zx-63a"/>
+                                                <constraint firstItem="w8F-5P-Ik9" firstAttribute="leading" secondItem="uxj-xP-Jq0" secondAttribute="leading" constant="10" id="Gxb-TE-nI3"/>
+                                                <constraint firstItem="UBR-5y-F3k" firstAttribute="centerY" secondItem="uxj-xP-Jq0" secondAttribute="centerY" constant="-20" id="QVf-zx-63a"/>
                                                 <constraint firstItem="fge-GR-bjU" firstAttribute="leading" secondItem="uxj-xP-Jq0" secondAttribute="leading" constant="10" id="Xeq-g3-JfM"/>
                                                 <constraint firstItem="pR1-ps-kMX" firstAttribute="centerY" secondItem="fge-GR-bjU" secondAttribute="centerY" id="bah-cz-XgO"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="pR1-ps-kMX" secondAttribute="trailing" constant="10" id="c6L-Hq-exB"/>
                                                 <constraint firstItem="CDR-EA-u04" firstAttribute="top" secondItem="UBR-5y-F3k" secondAttribute="bottom" id="fFr-he-gQH"/>
                                                 <constraint firstItem="CDR-EA-u04" firstAttribute="centerX" secondItem="uxj-xP-Jq0" secondAttribute="centerX" id="hbE-k7-kqj"/>
+                                                <constraint firstItem="1Km-1Y-Kz1" firstAttribute="top" secondItem="w8F-5P-Ik9" secondAttribute="bottom" constant="-10" id="p1f-XU-0Zn"/>
                                                 <constraint firstItem="fge-GR-bjU" firstAttribute="top" secondItem="uxj-xP-Jq0" secondAttribute="top" constant="10" id="pfb-ue-4Hx"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -111,6 +137,7 @@
                                             <outlet property="playSoundButton" destination="UBR-5y-F3k" id="tPF-VF-lTQ"/>
                                             <outlet property="plusButton" destination="pR1-ps-kMX" id="Qjz-pU-s5u"/>
                                             <outlet property="progressSlider" destination="CDR-EA-u04" id="yKK-v8-iPJ"/>
+                                            <outlet property="starRatingView" destination="w8F-5P-Ik9" id="o9v-Kt-rdo"/>
                                             <outlet property="subtitleLabel" destination="fge-GR-bjU" id="k80-OW-POD"/>
                                         </connections>
                                     </tableViewCell>
@@ -177,7 +204,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ers-pG-w11" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1132.5" y="-66.5"/>
+            <point key="canvasLocation" x="1132" y="-67.016491754122939"/>
         </scene>
         <!--Add Events View Controller-->
         <scene sceneID="g91-Az-ldc">
