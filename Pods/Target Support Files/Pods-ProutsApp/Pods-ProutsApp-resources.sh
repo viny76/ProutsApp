@@ -80,11 +80,11 @@ EOM
   esac
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_resource "HSDatePickerViewController/HSDatePickerViewControllerDemo/HSDatePickerViewController/HSDatePickerViewController.xib"
+  install_resource "$PODS_CONFIGURATION_BUILD_DIR/JJMaterialTextField/JJMaterialTextField.bundle"
   install_resource "Parse/Parse/Resources/en.lproj"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_resource "HSDatePickerViewController/HSDatePickerViewControllerDemo/HSDatePickerViewController/HSDatePickerViewController.xib"
+  install_resource "$PODS_CONFIGURATION_BUILD_DIR/JJMaterialTextField/JJMaterialTextField.bundle"
   install_resource "Parse/Parse/Resources/en.lproj"
 fi
 

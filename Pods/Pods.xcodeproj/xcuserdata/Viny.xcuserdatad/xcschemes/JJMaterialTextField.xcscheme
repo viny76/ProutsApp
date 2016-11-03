@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '6B0B9C928B05BA6346AB032DD0260C56'
-               BlueprintName = 'HSDatePickerViewController'
+               BlueprintIdentifier = '1A8D8FF8EAACA775C701B6B91D02FD8D'
+               BlueprintName = 'JJMaterialTextField'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libHSDatePickerViewController.a'>
+               BuildableName = 'libJJMaterialTextField.a'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

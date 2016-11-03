@@ -13,6 +13,8 @@
 @end
 
 @implementation AddEventsViewController
+int count;
+NSTimer *timer;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -54,36 +56,9 @@ replacementString:(NSString *)string {
     if (self.datasound == nil) {
         ok = NO;
     }
-//    if (self.datasound.text.length == 0) {
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:Localized(@"ERROR") message:Localized(@"Question is empty") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//        alert.tag = 100;
-//        [alert show];
-//        ok = NO;
-//    }
-    
-//    // Check Date
-//    else if ([self.dateButton.titleLabel.text isEqualToString:@"Choisir Date"]) {
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:Localized(@"ERROR") message:Localized(@"Select Date") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//        alert.tag = 101;
-//        [alert show];
-//        ok = NO;
-//    }
     
     return ok;
 }
-
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-//    if (alertView.tag == 100) {
-//        if (buttonIndex == 0) {
-//            [self.questionTextField becomeFirstResponder];
-//        }
-//    }
-//    else if (alertView.tag == 101) {
-//        if (buttonIndex == 0) {
-//            [self showDatePicker:self.dateButton];
-//        }
-//    }
-//}
 
 - (IBAction)sendEvent:(id)sender {
     if ([self verifications]) {
@@ -109,12 +84,36 @@ replacementString:(NSString *)string {
         [self sendAudioToServer:data];
 }
 - (IBAction)startRec:(KYShutterButton *)sender {
+    if (timer) {
+        [timer invalidate];
+    }
     if (sender.buttonState == ButtonStateNormal) {
+        count = 10;
         sender.buttonState = ButtonStateRecording;
         [self.audioRecorder record];
+        [self.circleProgressBar setProgress:100 animated:YES duration:5.0f];
+        timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateTime) userInfo:nil repeats:YES];
     } else if (sender.buttonState == ButtonStateRecording) {
+        count = 0;
         sender.buttonState = ButtonStateNormal;
         [self.audioRecorder stop];
+        [self.circleProgressBar stopAnimation];
+        [self.circleProgressBar setProgress:0 animated:NO];
+    }
+}
+
+- (void)updateTime {
+    NSLog(@"updateTime");
+    if (count > 0) {
+        count--;
+        NSLog(@"%d", count);
+        NSLog(@"yeah");
+    } else {
+        [timer invalidate];
+        self.recordSoundButton.buttonState = ButtonStateNormal;
+        [self.audioRecorder stop];
+        [self.circleProgressBar stopAnimation];
+        [self.circleProgressBar setProgress:0 animated:NO];
     }
 }
 

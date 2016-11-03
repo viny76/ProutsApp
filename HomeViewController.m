@@ -115,22 +115,27 @@ NSData *soundData;
     [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC+2"]];
     cell.hourLabel.text = [formatter stringFromDate:post.createdAt];
     
+    PFRelation *relation = [post relationForKey:@"Rate"];
+    PFQuery *query = [relation query];
     // Get Rate
     if (![[post objectForKey:@"fromUserId"] isEqualToString:[PFUser currentUser].objectId]) {
-        PFRelation *relation = [post relationForKey:@"Rate"];
-        PFQuery *query = [relation query];
         [query whereKey:@"eventId" equalTo:post.objectId];
         [query whereKey:@"userId" equalTo:[PFUser currentUser].objectId];
         [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
             if (object) {
                 cell.starRatingView.value = [[object valueForKey:@"rate"] floatValue];
-                cell.starRatingView.tintColor = [UIColor colorWithHexString:@"4054B2"];
             }
         }];
     } else {
-        cell.starRatingView.value = 2;
-        // Average value
         cell.starRatingView.enabled = NO;
+        [query whereKey:@"eventId" equalTo:post.objectId];
+        [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+            if (objects) {
+                cell.starRatingView.value = [[[objects valueForKey:@"rate"] valueForKeyPath:@"@avg.floatValue"] floatValue];
+            } else {
+                cell.starRatingView.value = 0;
+            }
+        }];
     }
     
     NSInteger rowNumber = 0;

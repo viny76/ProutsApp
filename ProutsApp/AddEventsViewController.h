@@ -11,6 +11,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <AVFoundation/AVFoundation.h>
 #import "MBProgressHUD.h"
+#import <CircleProgressBar.h>
 #import "ProutsApp-Swift.h"
 
 @interface AddEventsViewController : UIViewController <AVAudioRecorderDelegate>
@@ -23,5 +24,6 @@
 @property (nonatomic, strong) AVAudioSession *audioSession;
 @property (nonatomic, strong) NSData *datasound;
 @property (strong, nonatomic) IBOutlet KYShutterButton *recordSoundButton;
+@property (weak, nonatomic) IBOutlet CircleProgressBar *circleProgressBar;
 
 @end
